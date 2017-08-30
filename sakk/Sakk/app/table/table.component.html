@@ -1,0 +1,6 @@
+<div id="table">
+    <div class="row" *ngFor="let row of rows">
+        <cell *ngFor="let col of cols" [baseColor]="cellColor(col, row)" [row]="row" [col]="col" 
+        (cellClicked)="handleCellClick($event)" [figure]="setHostedFigure(col, row)"></cell>
+    </div>
+</div>
