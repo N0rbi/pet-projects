@@ -1,0 +1,32 @@
+/*
+    Needs better implementation
+*/
+:host {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 100vh;
+    height: 100vh;
+    background-color: rgba(40,40,40,0.4);    
+}
+
+.layover {
+    width: 100%;
+    height: 100%;
+}
+
+.center {
+    margin: 0 auto;
+    display: table;
+}
+
+.v-center {
+    margin-top: 50vh;
+    transform: translateY(-50%);
+}
+
+.option {
+    display: inline-block;
+    margin: 5px;
+}

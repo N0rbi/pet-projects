@@ -236,4 +236,34 @@ export class FigureSet {
         });
         return ret;
     }
+
+    transformPawn(figure : string) {
+        let [newFigure , oldFigure] = [null, null];
+        for (let f of this.getTable()) {
+            if (f instanceof Pawn && (f.y == 1 || f.y == 8)){
+                let [color, x, y] = [f.color, f.x, f.y];
+                oldFigure = f;
+                switch(figure) {
+                    case 'bishop':
+                        newFigure = new Bishop(color, x, y, this);
+                    break;
+                    case 'knight':
+                        newFigure = new Knight(color, x, y, this);                        
+                    break;
+                    case 'queen':
+                        newFigure = new Queen(color, x, y, this);                        
+                    break;
+                    case 'rook':
+                        newFigure = new Rook(color, x, y, this);                        
+                    break;
+                }
+                break;
+            }
+        }
+        if (this.utilService.removeItemFromArray(this.lightFigures, oldFigure)) {
+            this.lightFigures.push(newFigure);
+        } else if (this.utilService.removeItemFromArray(this.darkFigures, oldFigure)) {
+            this.darkFigures.push(newFigure);
+        }
+    }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Figure } from './figure/figure.model';
-import { King } from './figure/king.model';
 import { GameService } from './table-service/game.service';
+import { Deferred } from '../deferred';
 
 
 @Component({
@@ -14,9 +14,11 @@ import { GameService } from './table-service/game.service';
 export class TableComponent implements OnInit {
     public rows : Array<number> = [1,2,3,4,5,6,7,8];
     public cols : Array<String> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    public isPawnTransforming : boolean = false;
     private figuresToRender : Array<Figure>;
     private coloredTiles : Array<any>;
     private figureToMove : Figure;
+    private pawnTransformComplete : Deferred<void> = null;
 
     constructor(public gameService : GameService) {}
 
@@ -47,11 +49,30 @@ export class TableComponent implements OnInit {
         } else {
             let moved = this.gameService.moveFigure(this.figureToMove,this.columnValue(cell.col), cell.row);
             if (moved) {
-                this.gameService.endTurn();
+                this.isPawnTransforming = this.gameService.isPawnTransforming();
+                if (this.isPawnTransforming) {
+                    this.pawnTransformComplete = new Deferred<void>();
+                    this.pawnTransformComplete.promise.then(() => {
+                        this.gameService.endTurn();
+                    });
+                } else {
+                    this.gameService.endTurn();
+                }
             }
         }
         this.clear();
         this.requestRender();
+    }
+
+    public transformPawn(figure) : void {
+        this.gameService.transformPawn(figure);
+        this.pawnTransformComplete.resolve();
+        this.isPawnTransforming = false;
+        this.requestRender();
+    }
+
+    public getCurrentColor() : number {
+        return this.gameService.getCurrentColor();
     }
 
     public clear() {
@@ -68,7 +89,6 @@ export class TableComponent implements OnInit {
                 return fig;
             }
         }
-
         return null;
     }
 

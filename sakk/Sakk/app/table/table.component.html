@@ -3,4 +3,5 @@
         <cell *ngFor="let col of cols" [baseColor]="cellColor(col, row)" [row]="row" [col]="col" 
         (cellClicked)="handleCellClick($event)" [figure]="setHostedFigure(col, row)"></cell>
     </div>
+    <pawn-transform *ngIf="isPawnTransforming" (figureChosen)="transformPawn($event)" [color]="getCurrentColor()"></pawn-transform>
 </div>

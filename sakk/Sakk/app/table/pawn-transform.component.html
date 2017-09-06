@@ -1,0 +1,10 @@
+<div class="layover">
+    <div class="center v-center">
+        <h1>Choose a figure to update to:</h1>
+            <div class="center">
+                <div class="option" *ngFor="let figure of figures" (click)="chosenFigure(figure)">
+                    <img [src]="figure.getUrl()"/>
+                </div>
+            </div>
+    </div>
+</div>

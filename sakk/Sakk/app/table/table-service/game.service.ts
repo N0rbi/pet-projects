@@ -3,6 +3,7 @@ import { PlayerService, Player } from './player.service';
 import { GameInstance, GameInstanceService, FigureSet } from './game.instance.service';
 import { GameMasterService, GameStatus } from './game-master.service';
 import { Figure } from '../figure/figure.model';
+import { Pawn } from '../figure/pawn.model';
 
 @Injectable()
 export class GameService {
@@ -91,12 +92,30 @@ export class GameService {
         return status;
     }
 
+    public isPawnTransforming() : boolean {
+        // if there is one pwan in hte first row, it should transform
+        for (let f of this.currentGame.getFigures().getTable()) {
+            if(f instanceof Pawn && (f.y == 1 || f.y == 8)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public transformPawn(figure : string) : void {
+        this.currentGame.getFigures().transformPawn(figure);
+    }
+
     public getFigures() : Array<Figure> {
         return this.currentGame.getFigures().getTable();
     }
 
     public enemyTurn() : boolean {
         return !this.currentGame.isPlayersTurn(this.currentPlayer);
+    }
+
+    public getCurrentColor() : number {
+        return this.currentGame.getCurrentPlayerColor();
     }
 
 }

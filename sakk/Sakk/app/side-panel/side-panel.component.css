@@ -3,6 +3,7 @@
     height: 100vh;
     overflow: auto;
     padding: 15px;
+    overflow: hidden;
 }
 
 * {
@@ -29,7 +30,9 @@
     box-shadow: 1px 1px 1px 0 lightgray inset;  
     font: -moz-field;
     font: -webkit-small-control;
+    font-size: 2em;
     margin-top: 5px;
     padding: 2px 3px;
-    max-height: 10%;
+    max-height: 3em;
+    overflow-y: auto;
 }

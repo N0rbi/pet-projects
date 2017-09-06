@@ -3,6 +3,7 @@
     width: 100vh;
     height: 100vh;
     float: left;
+    left: 0;
 }
 
 #table {
@@ -13,7 +14,7 @@
 #table .row {
     height: calc(100% / 8);
     width: 100%;
-
+    margin-left: 0;
 }
 
 #table cell {
