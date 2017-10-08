@@ -1,6 +1,7 @@
 from game import Game
 import pygame
 from gameObject.staticGameObject import StaticGameObject
+from gameObject.environment.blocks.blockFactory import BlockFactory
 from gameObject.tank.tank import Tank
 
 # Main handles file loading (possible network managing), and the configuration of the game (images, sounds)
@@ -37,10 +38,14 @@ def getResponders():
     return responders
 
 def ground():
+    bf = BlockFactory(400, 400, 64)
     blocks = []
-    for i in range(10):
-        blocks.append(StaticGameObject(64*i +1 , 400, 'assets/dust.png'))
+    for i in range(-10, 10):
+        for j in range(3):
+            blocks.append(bf.get_block(i,j))
     return blocks
+
+
 
 game = Game(800, 600)
 game.observers = getObservers()

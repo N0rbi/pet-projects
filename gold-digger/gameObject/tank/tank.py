@@ -50,7 +50,7 @@ class Tank(DynamicGameObject):
         self.__drill.render(screen)
 
     def prevent_falling(self, o):
-        self.y = o.y - self.h + 1
+        self.y = o.y - self.h
         # prevent multiple blocks pulling it down
         if self.forces_y.count(-self.gravity*self.m) == 0:
             self.forces_y.append(-self.gravity*self.m)
