@@ -1,5 +1,7 @@
 import pygame
 import time
+
+
 class Game():
     __devBlue = (0, 0, 255)
 
@@ -20,7 +22,7 @@ class Game():
 
     # Run the tick method of the dynamic objects
     def _digestDynamic(self, deltatime):
-        pass
+        [o.tick(deltatime) for o in self.gameObjects]
 
     # Detects events
     def _observers(self):

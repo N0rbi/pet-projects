@@ -22,7 +22,7 @@ def getObservers():
     observers.append(KeyStrokeObserver(pygame.K_RIGHT, keys.RIGHT))
     return observers
 
-tank = Tank(30, 30)
+tank = Tank(30, 30, 1.)
 
 def getResponders():
     from responders.gameQuitResponder import GameQuitResponder
@@ -32,12 +32,10 @@ def getResponders():
     responders.append(MoveTankResponder(tank))
     return responders
 
-game = Game(800,600)
+game = Game(800, 600)
 game.observers = getObservers()
 game.responders = getResponders()
 game.gameObjects = [tank]
-
-
 
 for gameStatus in game.tick():
     pass

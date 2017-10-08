@@ -9,10 +9,10 @@ class MoveTankResponder(Responder):
 
     def respond(self, observations):
         if keys.UP in observations:
-            self.__tank.y -= 1
+            self.__tank.throttle_up()
         if keys.DOWN in observations:
-            self.__tank.y += 1
+            self.__tank.throttle_down()
         if keys.LEFT in observations:
-            self.__tank.x -= 1
+            self.__tank.throttle_left()
         if keys.RIGHT in observations:
-            self.__tank.x += 1
+            self.__tank.throttle_right()

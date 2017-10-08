@@ -1,19 +1,19 @@
-from gameObject.gameObject import GameObject
+from gameObject.dynamicGameObject import DynamicGameObject
 from gameObject.tank.drill import Drill
 from gameObject.tank.engine import Engine
 from gameObject.tank.wheels import Wheels
 
 
-class Tank(GameObject):
+class Tank(DynamicGameObject):
 
-    def __init__(self, x, y):
-        self.__engine = Engine(0, 0)
-        self.__drill = Drill(0,0)
-        self.__wheel = Wheels(0,0)
-        self.__wheelOffset = (0,10)
-        self.__drillOffset = (64,0)
-        self.x = x
-        self.y = y
+    def __init__(self, x, y, m):
+        self.__engine = Engine(0, 0, 20.)
+        self.__drill = Drill(0, 0)
+        self.__wheel = Wheels(0, 0)
+        self.__wheelOffset = (0, 10)
+        self.__drillOffset = (64, 0)
+        super().__init__(x, y, m)
+
 
     @property
     def x(self):
@@ -42,3 +42,15 @@ class Tank(GameObject):
         self.__engine.render(screen)
         self.__wheel.render(screen)
         self.__drill.render(screen)
+
+    def throttle_up(self):
+        self.forces_y.append(-self.__engine.lift)
+
+    def throttle_down(self):
+        self.forces_y.append(self.__engine.lift)
+
+    def throttle_left(self):
+        self.forces_x.append(-self.__engine.lift)
+
+    def throttle_right(self):
+        self.forces_x.append(self.__engine.lift)
