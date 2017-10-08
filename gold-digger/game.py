@@ -1,5 +1,6 @@
 import pygame
 import time
+from gameObject.dynamicGameObject import DynamicGameObject
 
 
 class Game():
@@ -22,7 +23,7 @@ class Game():
 
     # Run the tick method of the dynamic objects
     def _digestDynamic(self, deltatime):
-        [o.tick(deltatime) for o in self.gameObjects]
+        [o.tick(deltatime) for o in self.gameObjects if isinstance(o, DynamicGameObject)]
 
     # Detects events
     def _observers(self):
