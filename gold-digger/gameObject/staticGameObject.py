@@ -1,5 +1,6 @@
 import pygame
 from gameObject.gameObject import GameObject
+from gameObject.gameObject import globalOffset
 
 
 class StaticGameObject(GameObject):
@@ -8,6 +9,7 @@ class StaticGameObject(GameObject):
         self.x = x
         self.y = y
         self.renderable = pygame.image.load(imgPath)
+        self.renderable = pygame.transform.scale(self.renderable, (64,64))
 
     def render(self, screen):
-        screen.blit(self.renderable, self.renderable.get_rect())
+        screen.blit(self.renderable, (globalOffset[0]+self.x, globalOffset[1]+self.y))

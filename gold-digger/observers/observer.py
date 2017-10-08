@@ -1,4 +1,4 @@
 class Observer():
 
-    def observe(self):
+    def observe(self, events, objects=[]):
         pass
