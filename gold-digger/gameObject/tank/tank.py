@@ -1,8 +1,8 @@
 from gameObject.gameObject import GLOBAL_OFFSET
 from gameObject.dynamicGameObject import DynamicGameObject
-from gameObject.interface.text_display import TextDisplay
 from gameObject.tank.cargo_bay import CargoBay
 from gameObject.tank.cooler import Cooler
+from gameObject.tank.drill import Drill
 from gameObject.tank.engine import Engine
 from gameObject.tank.fuel_tank import FuelTank
 from gameObject.tank.frame import Frame
@@ -12,10 +12,12 @@ from game_mode_constants import *
 class Tank(DynamicGameObject):
     def __init__(self, x, y, m):
         self.__frame = Frame(0, 0, 100)
-        self.__engine = Engine(0, 0, 20.)
+        self.__engine = Engine(0, 0, 500., 250)
         self.__cooler = Cooler(0, 0, 10.)
         self.__fuel_tank = FuelTank(0, 0, 10.)
         self.__cargo_bay = CargoBay(0, 0, 10.)
+
+        # self.__drill_right = Drill(100, 0, 12.)
 
         self.on_ground = False
         self.__x = x
@@ -33,6 +35,7 @@ class Tank(DynamicGameObject):
         self.__cooler.x = value
         self.__fuel_tank.x = value
         self.__cargo_bay.x = value
+        # self.__drill_right.x = value
 
         if OFFSET:
             GLOBAL_OFFSET[0] = value - 400 + self.w/2
@@ -52,6 +55,7 @@ class Tank(DynamicGameObject):
         self.__cooler.y = value
         self.__fuel_tank.y = value
         self.__cargo_bay.y = value
+        # self.__drill_right.y = value
 
         if OFFSET:
             GLOBAL_OFFSET[1] = value - 300 + self.h/2
@@ -62,12 +66,11 @@ class Tank(DynamicGameObject):
 
     def render(self, screen):
         self.__frame.render(screen)
+        # self.__drill_right.render(screen)
         self.__engine.render(screen)
         self.__cooler.render(screen)
         self.__fuel_tank.render(screen)
         self.__cargo_bay.render(screen)
-
-        # self.__hp_display.render(screen)
 
     def prevent_falling(self, o):
         self.y = (o.y - self.h)
@@ -82,10 +85,10 @@ class Tank(DynamicGameObject):
         self.forces_y.append(self.__engine.lift)
 
     def throttle_left(self):
-        self.forces_x.append(-self.__engine.lift)
+        self.forces_x.append(-self.__engine.side_force)
 
     def throttle_right(self):
-        self.forces_x.append(self.__engine.lift)
+        self.forces_x.append(self.__engine.side_force)
 
     def get_hp(self):
         hp = self.__frame.hp

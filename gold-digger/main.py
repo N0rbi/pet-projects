@@ -48,7 +48,7 @@ def ground():
 
 game = Game(800, 600)
 tank = Tank(400, 100, 1.)
-hp_display = TextDisplay(50, 500, font_size=20, text=tank.get_hp())
+hp_display = TextDisplay(50, 500, font_size=20, text="HP:"+tank.get_hp())
 
 game.observers = getObservers()
 game.responders = getResponders()

@@ -4,7 +4,7 @@ from gameObject.gameObject import GameObject
 class DynamicGameObject(GameObject):
     def __init__(self, x, y, m):
         super().__init__(x, y)
-        self.gravity = 9.
+        self.gravity = 200.
         self.m = m
 
         self.forces_x = []
