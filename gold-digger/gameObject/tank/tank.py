@@ -1,22 +1,24 @@
 from gameObject.gameObject import GLOBAL_OFFSET
 from gameObject.dynamicGameObject import DynamicGameObject
+from gameObject.interface.text_display import TextDisplay
 from gameObject.tank.cargo_bay import CargoBay
 from gameObject.tank.cooler import Cooler
 from gameObject.tank.engine import Engine
 from gameObject.tank.fuel_tank import FuelTank
 from gameObject.tank.frame import Frame
+from game_mode_constants import *
 
 
 class Tank(DynamicGameObject):
-
     def __init__(self, x, y, m):
-        self.__frame = Frame(0, 0, 100.)
-        self.__engine = Engine(0, 0, 2000.)
+        self.__frame = Frame(0, 0, 100)
+        self.__engine = Engine(0, 0, 20.)
         self.__cooler = Cooler(0, 0, 10.)
         self.__fuel_tank = FuelTank(0, 0, 10.)
         self.__cargo_bay = CargoBay(0, 0, 10.)
 
         self.on_ground = False
+        self.__x = x
         self.__y = y
         super().__init__(x, y, m)
 
@@ -32,7 +34,11 @@ class Tank(DynamicGameObject):
         self.__fuel_tank.x = value
         self.__cargo_bay.x = value
 
-        GLOBAL_OFFSET[0] = value - 400 + self.w/2
+        if OFFSET:
+            GLOBAL_OFFSET[0] = value - 400 + self.w/2
+        else:
+            GLOBAL_OFFSET[0] = 0
+
         self.__x = value
     
     @property
@@ -46,7 +52,11 @@ class Tank(DynamicGameObject):
         self.__cooler.y = value
         self.__fuel_tank.y = value
         self.__cargo_bay.y = value
-        GLOBAL_OFFSET[1] = value - 300 + self.h/2
+
+        if OFFSET:
+            GLOBAL_OFFSET[1] = value - 300 + self.h/2
+        else:
+            GLOBAL_OFFSET[1] = 0
         self.__y = value
         self.on_ground = False
 
@@ -57,8 +67,10 @@ class Tank(DynamicGameObject):
         self.__fuel_tank.render(screen)
         self.__cargo_bay.render(screen)
 
+        # self.__hp_display.render(screen)
+
     def prevent_falling(self, o):
-        self.y = o.y - self.h
+        self.y = (o.y - self.h)
         # prevent multiple blocks pulling it down
         if self.forces_y.count(-self.gravity*self.m) == 0:
             self.forces_y.append(-self.gravity*self.m)
@@ -74,3 +86,36 @@ class Tank(DynamicGameObject):
 
     def throttle_right(self):
         self.forces_x.append(self.__engine.lift)
+
+    def get_hp(self):
+        hp = self.__frame.hp
+        return str(hp)
+
+    def engine_cooling(self, dt):
+        self.__engine.temp -= self.__cooler.cooling_rate * dt
+        pass
+
+    def drill_block(self, block_o):
+        # Run drill animation:
+
+        # Move to target block:
+
+        # Add mineral to cargo bay:
+        # if block_o == mineral
+        self.collect_cargo(block_o)
+
+        # Delete mineral:
+
+        # game.gameObjects.remove(mineral_o)
+
+        pass
+
+    def collect_cargo(self, mineral_o):
+        if self.__cargo_bay.cargo_mass + mineral_o.mass <= self.__cargo_bay.capacity:
+            self.__cargo_bay.cargo.append(mineral_o)
+            self.__cargo_bay.cargo_mass += mineral_o.mass
+            self.__cargo_bay.status = 100 * self.__cargo_bay.cargo_mass / self.__cargo_bay.capacity
+
+        else:
+            print('CARGO FULL YOU IDIOT!')
+

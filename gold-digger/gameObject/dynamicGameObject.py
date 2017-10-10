@@ -1,11 +1,10 @@
 from gameObject.gameObject import GameObject
-import math
 
 
 class DynamicGameObject(GameObject):
     def __init__(self, x, y, m):
-        super().__init__(x,y)
-        self.gravity = 981.
+        super().__init__(x, y)
+        self.gravity = 9.
         self.m = m
 
         self.forces_x = []

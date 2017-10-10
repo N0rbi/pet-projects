@@ -1,8 +1,7 @@
 import pygame
 
 
-class GameObject():
-
+class GameObject:
     def __init__(self, x=0, y=0, w=64, h=64):
         self.w = w
         self.h = h
@@ -18,4 +17,4 @@ class GameObject():
         pass
 
 
-GLOBAL_OFFSET = [0,0]
+GLOBAL_OFFSET = [0, 0]

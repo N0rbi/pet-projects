@@ -13,4 +13,6 @@ class StaticGameObject(GameObject):
         self.renderable = pygame.transform.scale(self.renderable, (64, 64))
 
     def render(self, screen):
+        # render_x = int(self.x)
+        # render_y = int(self.y)
         screen.blit(self.renderable, (self.x-GLOBAL_OFFSET[0], self.y-GLOBAL_OFFSET[1]))

@@ -1,6 +1,6 @@
 from game import Game
 import pygame
-from gameObject.staticGameObject import StaticGameObject
+from gameObject.interface.text_display import TextDisplay
 from gameObject.environment.blocks.blockFactory import BlockFactory
 from gameObject.tank.tank import Tank
 
@@ -26,9 +26,6 @@ def getObservers():
     return observers
 
 
-tank = Tank(400, 300, 1.)
-
-
 def getResponders():
     from responders.gameQuitResponder import GameQuitResponder
     from responders.moveTankResponder import MoveTankResponder
@@ -45,16 +42,19 @@ def ground():
     blocks = []
     for i in range(-10, 10):
         for j in range(3):
-            blocks.append(bf.get_block(i,j))
+            blocks.append(bf.get_block(i, j))
     return blocks
 
 
-
 game = Game(800, 600)
+tank = Tank(400, 100, 1.)
+hp_display = TextDisplay(50, 500, font_size=20, text=tank.get_hp())
+
 game.observers = getObservers()
 game.responders = getResponders()
-game.gameObjects = [tank]
 game.gameObjects.extend(ground())
+game.gameObjects.extend([tank])
+game.gameObjects.extend([hp_display])
 
 for gameStatus in game.tick():
     pass

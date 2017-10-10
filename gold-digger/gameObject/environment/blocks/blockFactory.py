@@ -1,8 +1,8 @@
 import random
 from gameObject.environment.blocks.block import Block
 
-class BlockFactory():
 
+class BlockFactory():
     def __init__(self, start_x, start_y, unit):
         self.start_x = start_x
         self.start_y = start_y

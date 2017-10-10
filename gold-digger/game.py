@@ -3,7 +3,7 @@ import time
 from gameObject.dynamicGameObject import DynamicGameObject
 
 
-class Game():
+class Game:
     __devBlue = (100, 110, 178)
 
     def __init__(self, width, height):
