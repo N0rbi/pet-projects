@@ -25,7 +25,9 @@ def getObservers():
     observers.append(CollisionObserver())
     return observers
 
+
 tank = Tank(400, 300, 1.)
+
 
 def getResponders():
     from responders.gameQuitResponder import GameQuitResponder
@@ -36,6 +38,7 @@ def getResponders():
     responders.append(MoveTankResponder(tank))
     responders.append(TankCollidedResponder(tank))
     return responders
+
 
 def ground():
     bf = BlockFactory(400, 400, 64)

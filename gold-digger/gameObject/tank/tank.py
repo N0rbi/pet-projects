@@ -1,22 +1,24 @@
 from gameObject.gameObject import GLOBAL_OFFSET
 from gameObject.dynamicGameObject import DynamicGameObject
-from gameObject.tank.drill import Drill
+from gameObject.tank.cargo_bay import CargoBay
+from gameObject.tank.cooler import Cooler
 from gameObject.tank.engine import Engine
-from gameObject.tank.wheels import Wheels
+from gameObject.tank.fuel_tank import FuelTank
+from gameObject.tank.frame import Frame
 
 
 class Tank(DynamicGameObject):
 
     def __init__(self, x, y, m):
+        self.__frame = Frame(0, 0, 100.)
         self.__engine = Engine(0, 0, 2000.)
-        self.__drill = Drill(0, 0)
-        self.__wheel = Wheels(0, 0)
-        self.__wheelOffset = (0, 10)
-        self.__drillOffset = (64, 0)
+        self.__cooler = Cooler(0, 0, 10.)
+        self.__fuel_tank = FuelTank(0, 0, 10.)
+        self.__cargo_bay = CargoBay(0, 0, 10.)
+
         self.on_ground = False
         self.__y = y
         super().__init__(x, y, m)
-
 
     @property
     def x(self):
@@ -24,12 +26,14 @@ class Tank(DynamicGameObject):
 
     @x.setter
     def x(self, value):
+        self.__frame.x = value
         self.__engine.x = value
-        self.__drill.x = value + self.__drillOffset[0]
-        self.__wheel.x = value + self.__wheelOffset[0]
+        self.__cooler.x = value
+        self.__fuel_tank.x = value
+        self.__cargo_bay.x = value
+
         GLOBAL_OFFSET[0] = value - 400 + self.w/2
         self.__x = value
-
     
     @property
     def y(self):
@@ -37,17 +41,21 @@ class Tank(DynamicGameObject):
 
     @y.setter
     def y(self, value):
+        self.__frame.y = value
         self.__engine.y = value
-        self.__drill.y = value + self.__drillOffset[1]
-        self.__wheel.y = value + self.__wheelOffset[1]
+        self.__cooler.y = value
+        self.__fuel_tank.y = value
+        self.__cargo_bay.y = value
         GLOBAL_OFFSET[1] = value - 300 + self.h/2
         self.__y = value
         self.on_ground = False
 
     def render(self, screen):
+        self.__frame.render(screen)
         self.__engine.render(screen)
-        self.__wheel.render(screen)
-        self.__drill.render(screen)
+        self.__cooler.render(screen)
+        self.__fuel_tank.render(screen)
+        self.__cargo_bay.render(screen)
 
     def prevent_falling(self, o):
         self.y = o.y - self.h
