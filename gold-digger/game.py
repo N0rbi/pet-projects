@@ -4,7 +4,7 @@ from gameObject.dynamicGameObject import DynamicGameObject
 
 
 class Game:
-    __devBlue = (100, 110, 178)
+    __devBlue = (50, 110, 255)
 
     def __init__(self, width, height):
         pygame.init()

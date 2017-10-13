@@ -13,8 +13,6 @@ class GameObject:
         return pygame.Rect(self.x, self.y, self.w, self.h)
 
     def render(self, screen):
-        print(GLOBAL_OFFSET)
         pass
-
 
 GLOBAL_OFFSET = [0, 0]

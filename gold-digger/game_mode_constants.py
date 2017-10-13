@@ -1,3 +1,2 @@
 GRAVITY = True
-OFFSET = False
-COLLISION = False
+OFFSET = True

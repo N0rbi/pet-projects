@@ -16,6 +16,7 @@ class Tank(DynamicGameObject):
         self.__cooler = Cooler(0, 0, 10.)
         self.__fuel_tank = FuelTank(0, 0, 10.)
         self.__cargo_bay = CargoBay(0, 0, 10.)
+        self.ground = None
 
         # self.__drill_right = Drill(100, 0, 12.)
 
@@ -55,7 +56,6 @@ class Tank(DynamicGameObject):
         self.__cooler.y = value
         self.__fuel_tank.y = value
         self.__cargo_bay.y = value
-        # self.__drill_right.y = value
 
         if OFFSET:
             GLOBAL_OFFSET[1] = value - 300 + self.h/2
@@ -71,12 +71,6 @@ class Tank(DynamicGameObject):
         self.__cooler.render(screen)
         self.__fuel_tank.render(screen)
         self.__cargo_bay.render(screen)
-
-    def prevent_falling(self, o):
-        self.y = (o.y - self.h)
-        # prevent multiple blocks pulling it down
-        if self.forces_y.count(-self.gravity*self.m) == 0:
-            self.forces_y.append(-self.gravity*self.m)
 
     def throttle_up(self):
         self.forces_y.append(-self.__engine.lift)
