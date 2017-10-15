@@ -6,6 +6,7 @@ from gameObject.tank.tank import Tank
 
 # Main handles file loading (possible network managing), and the configuration of the game (images, sounds)
 
+
 def ground():
     bf = BlockFactory(400, 400, 64)
     blocks = []

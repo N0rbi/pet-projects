@@ -10,7 +10,7 @@ class StaticGameObject(GameObject):
         self.x = x
         self.y = y
         self.renderable = pygame.image.load(imgPath)
-        self.renderable = pygame.transform.scale(self.renderable, (128, 128))
+        self.renderable = pygame.transform.scale(self.renderable, (64, 64))
 
     def render(self, screen):
         # render_x = int(self.x)

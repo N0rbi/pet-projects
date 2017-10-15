@@ -18,7 +18,6 @@ class TankCollidedResponder(Responder):
             self.__tank.forces_y.append(-200*self.__tank.m)
             self.__tank.y = y_limit.y - self.__tank.h
 
-
     def filter_collosion(self, obj):
         return isinstance(obj, Collision)
 

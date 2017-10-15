@@ -2,7 +2,7 @@ import pygame
 
 
 class GameObject:
-    def __init__(self, x=0, y=0, w=128, h=128):
+    def __init__(self, x=0, y=0, w=64, h=64):
         self.w = w
         self.h = h
         self.x = x

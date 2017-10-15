@@ -11,22 +11,22 @@ class BlockFactory():
     def get_block(self, x, y):
         block_map = [
             dict(
-                url="assets/ground_block_01.png",
+                url="assets/ground_tile.png",
                 value=0,
                 density=10
             ),
             dict(
-                url="assets/ground_block_02.png",
+                url="assets/ground_tile.png",
                 value=0,
                 density=10
             ),
             dict(
-                url="assets/ground_block_03.png",
-                value=0,
-                density=10
+                url="assets/gold_tile.png",
+                value=100,
+                density=100
             ),
             dict(
-                url="assets/gold_block_01.png",
+                url="assets/silver_tile.png",
                 value=100,
                 density=100
             ),
