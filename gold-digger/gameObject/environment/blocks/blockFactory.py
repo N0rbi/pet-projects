@@ -26,22 +26,22 @@ class BlockFactory:
                 density=100
             ),
             dict(
-                url="assets/ground_tile.png",
+                url="assets/tiles/ground_tile.png",
                 value=0,
                 density=10
             ),
             dict(
-                url="assets/ground_tile.png",
+                url="assets/tiles/ground_tile.png",
                 value=0,
                 density=10
             ),
             dict(
-                url="assets/gold_tile.png",
+                url="assets/tiles/gold_tile.png",
                 value=100,
                 density=100
             ),
             dict(
-                url="assets/silver_tile.png",
+                url="assets/tiles/silver_tile.png",
                 value=100,
                 density=100
             ),

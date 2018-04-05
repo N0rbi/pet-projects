@@ -2,8 +2,8 @@ from gameObject.staticGameObject import StaticGameObject
 
 
 class FuelTank(StaticGameObject):
-    def __init__(self, parent_tank, local_x=0, local_y=0, capacity=10.):
-        super().__init__('assets/fuel_tank.png', local_x, local_y)
+    def __init__(self, parent_tank, local_x=0, local_y=0, capacity=10., level=0):
+        super().__init__('assets/tank__'+str(level)+'/fuel_tank.png', local_x, local_y)
         self.capacity = capacity
         self.fuel_left = capacity
 
@@ -14,6 +14,7 @@ class FuelTank(StaticGameObject):
         self.fuel_level = 100
 
         self.fuel_warning = False
+        self.level = 0
 
     def tick(self, dt):
         self.fuel_left -= self.tank.engine.consumption * dt
@@ -38,4 +39,9 @@ class FuelTank(StaticGameObject):
 
     def send_warning(self):
         self.fuel_warning = True
+
+    def level_up(self):
+        self.level += 1;
+        self.update_sprite(newPath='assets/tank__'+str(self.level)+'fuel_tank.png')
+        self.capacity *= 1.2
 
