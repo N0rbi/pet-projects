@@ -5,27 +5,37 @@ from gameObject.tank.cooler import Cooler
 from gameObject.tank.engine import Engine
 from gameObject.tank.fuel_tank import FuelTank
 from gameObject.tank.frame import Frame
+from gameObject.tank.drill import Drill
 from game_mode_constants import *
 
 
 class Tank(DynamicGameObject):
     def __init__(self, x, y, m):
-        self.frame = Frame(0, 0, 100)
-        self.engine = Engine(0, 0, 200000., 200000.)
-        self.cooler = Cooler(0, 0, 10.)
-        self.fuel_tank = FuelTank(0, 0, 10.)
-        self.cargo_bay = CargoBay(0, 0, 10.)
+        self.frame      = Frame(hp=100)
+        self.engine     = Engine(lift=250000., side_force=250000.)
+        self.cooler     = Cooler(cooling_rate=10.)
+        self.fuel_tank  = FuelTank(self, capacity=100.)
+        self.cargo_bay  = CargoBay(capacity=100.)
+        #self.drill      = Drill(100, 0, 12.)
+
+        self.components = [self.frame,
+                           self.engine,
+                           self.cooler,
+                           self.fuel_tank,
+                           self.cargo_bay,]
+
         self.ground = None
-
-        # self.__drill_right = Drill(100, 0, 12.)
-
-        self.on_ground = False
+        self.landed = False
         self.__x = x
         self.__y = y
 
-        self.elasticity = 0.85
+        self.bounce = 0.85
 
         super().__init__(x, y, m)
+
+    def tick(self, dt):
+        self._updatePosition(dt)
+        [c.tick(dt) for c in self.components]
 
     @property
     def x(self):
@@ -40,7 +50,7 @@ class Tank(DynamicGameObject):
         self.cargo_bay.x = value
 
         if OFFSET:
-            GLOBAL_OFFSET[0] = value - 400 + self.w/2
+            GLOBAL_OFFSET[0] = value - 400 + 64/2
         else:
             GLOBAL_OFFSET[0] = 0
 
@@ -59,18 +69,14 @@ class Tank(DynamicGameObject):
         self.cargo_bay.y = value
 
         if OFFSET:
-            GLOBAL_OFFSET[1] = value - 300 + self.h/2
+            GLOBAL_OFFSET[1] = value - 300 + 64/2
         else:
             GLOBAL_OFFSET[1] = 0
         self.__y = value
-        self.on_ground = False
+        self.landed = False
 
     def render(self, screen):
-        self.frame.render(screen)
-        self.engine.render(screen)
-        self.cooler.render(screen)
-        self.fuel_tank.render(screen)
-        self.cargo_bay.render(screen)
+        [o.render(screen) for o in self.components]
 
     def throttle_up(self):
         self.forces_y.append(-self.engine.lift)
@@ -91,12 +97,13 @@ class Tank(DynamicGameObject):
         self.forces_y.append(self.engine.lift*value)
 
     def get_hp(self):
-        hp = self.frame.hp
-        return str(int(hp))
+        return str(int(self.frame.hp))
+
+    def get_fuel_level(self):
+        return str(self.fuel_tank.fuel_level)
 
     def engine_cooling(self, dt):
         self.engine.temp -= self.cooler.cooling_rate * dt
-        pass
 
     def drill_block(self, block_o):
         # Run drill animation:
@@ -112,13 +119,4 @@ class Tank(DynamicGameObject):
         # game.gameObjects.remove(mineral_o)
 
         pass
-
-    def collect_cargo(self, mineral_o):
-        if self.cargo_bay.cargo_mass + mineral_o.mass <= self.cargo_bay.capacity:
-            self.cargo_bay.cargo.append(mineral_o)
-            self.cargo_bay.cargo_mass += mineral_o.mass
-            self.cargo_bay.status = 100 * self.cargo_bay.cargo_mass / self.cargo_bay.capacity
-
-        else:
-            print('CARGO FULL YOU IDIOT!')
 

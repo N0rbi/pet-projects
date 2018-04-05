@@ -9,7 +9,7 @@ class StaticGameObject(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.renderable = pygame.image.load(imgPath)
-        self.renderable = pygame.transform.scale(self.renderable, (64, 64))
+        self.renderable = pygame.transform.scale(self.renderable, (w, h))
 
         self.rect = self.renderable.get_rect()
         self.rect.center = (self.x, self.y)
@@ -18,3 +18,8 @@ class StaticGameObject(pygame.sprite.Sprite):
         # render_x = int(self.x)
         # render_y = int(self.y)
         screen.blit(self.renderable, (self.x-GLOBAL_OFFSET[0], self.y-GLOBAL_OFFSET[1]))
+
+
+    def update_sprite(self, newPath):
+        self.renderable = pygame.image.load(newPath)
+        self.renderable = pygame.transform.scale(self.renderable, (self.w, self.h))

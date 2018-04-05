@@ -7,3 +7,6 @@ class Drill(StaticGameObject):
 
         self.drill_rate = drill_rate
         self.drill_level = 0               # compare to drilled mineral level
+
+    def tick(self, dt):
+        pass

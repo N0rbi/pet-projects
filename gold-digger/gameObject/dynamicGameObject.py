@@ -2,8 +2,8 @@ import pygame
 
 class DynamicGameObject:
     def __init__(self, m, x=0, y=0, w=64, h=64):
-        self.gravity = 130.;
-        self.damping = 250.;
+        self.gravity = 200;
+        self.damping = 250.
 
         self.m = m
 
@@ -32,8 +32,6 @@ class DynamicGameObject:
 
         self.reset_forces()
 
-
-
     def reset_forces(self):
         self.forces_x = [self.damping * (-self.vx)]
         self.forces_y = [self.gravity*self.m]
@@ -44,5 +42,3 @@ class DynamicGameObject:
     def reset_x(self):
         self.forces_x = [0]
 
-    def tick(self, dt):
-        self._updatePosition(dt)

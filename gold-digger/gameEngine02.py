@@ -3,6 +3,7 @@ import time
 import sys
 from gameObject.environment.blocks.blockFactory import BlockFactory
 
+
 class gameEngine02:
     __devBlue = (50, 110, 255)
     __devRed = (255, 0, 0)
@@ -16,12 +17,12 @@ class gameEngine02:
         self.__running = True
 
         self.staticObjects = self.generate_ground(start_x_blocks, start_y_blocks, unit_blocks)
-
         self.tankObject = tank
         self.interfaceObjects = []
+        self.collisionObjects = []
 
         self.clock = pygame.time.Clock()
-        self.fps = 60;
+        self.fps = 30
         self.dt = 1/self.fps
 
         self.player_move = [pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s]
@@ -31,45 +32,21 @@ class gameEngine02:
         got_hit = False
         while self.__running:
 
-            # Outside Event handler:
+            # External Event handler:
             self.event_handler()
 
-            # Physics
+            # Tank Physics
             self.tankObject.tick(self.dt)
 
             # Obstacle detection:
-            # Restart every loop so we can update potential obstacles.
-            # self.staticObjects_refresh()
-            obstacle_group = []
-            obstacle_group = pygame.sprite.Group()
-            for tile in self.staticObjects:
-                obstacle_group.add(tile)
-            self.tankObject.frame.refresh_collider()
-            hit = pygame.sprite.spritecollide(self.tankObject.frame, obstacle_group, False)
+            got_hit = self.obstacle_detector(got_hit)
 
-            #for obstacle in hit:
-            #    y_top = obstacle.rect.center
-
-            if hit and not got_hit:
-                got_hit = True
-                print("Collision detected!!")
-
-                self.tankObject.vy *= -1*self.tankObject.elasticity;
-
-                if self.tankObject.vy >= self.tankObject.frame.velocity_threshold:
-                    self.tankObject.frame.lose_health()
-                    #For now this is HP display:
-                    self.interfaceObjects[0].color = self.__devRed
-
-            elif not hit and got_hit:
-                got_hit = False
-                print("Clear of osbtacle.")
-                self.interfaceObjects[0].color = self.__devBlack
-
-
+            # Obstacle handler:
+            self.obstacle_handler()
 
             # Update Interface: will have to generalize later:
-            self.interfaceObjects[0].update_text("HP:"+ self.tankObject.get_hp())
+            self.interfaceObjects[0].update_text("HP:"+ self.tankObject.get_hp(), got_hit)
+            self.interfaceObjects[1].update_text("Fuel:" + self.tankObject.get_fuel_level() + "%", self.tankObject.fuel_tank.fuel_warning)
 
             # Update Screen
             self.__pgScreen.fill(self.__devGray)
@@ -98,6 +75,7 @@ class gameEngine02:
 
         for i in range(2):
             if key[self.player_move[2:4][i]]:
+                self.tankObject.engine.consumption = 1.5 * self.tankObject.engine.idle_consumption
                 self.tankObject.throttle_vertical([-1, 1][i])
 
     def generate_ground(self, start_x, start_y, unit):
@@ -105,7 +83,9 @@ class gameEngine02:
         blocks = []
         for i in range(-15, 15):
             for j in range(4):
-                blocks.append(bf.get_block(i, j))
+                block = bf.get_block(i, j)
+                if block is not None:
+                    blocks.append(block)
         return blocks
 
     # Renders content to the screen
@@ -118,3 +98,36 @@ class gameEngine02:
 
         # 3) UI:
         [o.render(self.__pgScreen) for o in self.interfaceObjects]
+
+
+    def obstacle_detector(self, got_hit):
+        # Restart every loop so we can update potential obstacles.
+        # self.staticObjects_refresh()
+        obstacle_group = []
+        obstacle_group = pygame.sprite.Group()
+        for tile in self.staticObjects:
+            obstacle_group.add(tile)
+        self.tankObject.frame.refresh_collider()
+        hit = pygame.sprite.spritecollide(self.tankObject.frame, obstacle_group, False)
+
+        if hit and not got_hit:
+            got_hit = True
+            print("Collision detected!!")
+
+            # self.tankObject.vy *= -1*self.tankObject.elasticity;
+
+            if self.tankObject.vy >= self.tankObject.frame.velocity_threshold:
+                self.tankObject.frame.lose_health()
+                # For now this is HP display:
+                # self.interfaceObjects[0].color = self.__devRed
+
+        elif not hit and got_hit:
+            got_hit = False
+            print("Clear of osbtacle.")
+            # self.interfaceObjects[0].color = self.__devBlack
+
+        self.collisionObjects = hit
+        return got_hit
+
+    def obstacle_handler(self):
+        pass
