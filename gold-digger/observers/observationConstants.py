@@ -1,1 +1,0 @@
-GAME_QUIT = 0

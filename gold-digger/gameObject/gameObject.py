@@ -1,6 +1,5 @@
 import pygame
 
-
 class GameObject:
     def __init__(self, x=0, y=0, w=64, h=64):
         self.w = w
@@ -14,5 +13,3 @@ class GameObject:
 
     def render(self, screen):
         pass
-
-GLOBAL_OFFSET = [0, 0]

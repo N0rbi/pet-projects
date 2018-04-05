@@ -1,16 +1,18 @@
 import pygame
-from gameObject.gameObject import GameObject
-from gameObject.gameObject import GLOBAL_OFFSET
+GLOBAL_OFFSET = [0, 0]
 
-
-class StaticGameObject(GameObject):
-
-    def __init__(self, x, y, imgPath):
-        super().__init__(x, y)
+class StaticGameObject(pygame.sprite.Sprite):
+    def __init__(self, imgPath, x=0, y=0, w=64, h=64):
+        pygame.sprite.Sprite.__init__(self)
+        self.w = w
+        self.h = h
         self.x = x
         self.y = y
         self.renderable = pygame.image.load(imgPath)
         self.renderable = pygame.transform.scale(self.renderable, (64, 64))
+
+        self.rect = self.renderable.get_rect()
+        self.rect.center = (self.x, self.y)
 
     def render(self, screen):
         # render_x = int(self.x)
