@@ -39,13 +39,13 @@ class gameEngine02:
             self.tankObject.tick(self.dt)
 
             # Obstacle detection:
-            got_hit = self.obstacle_detector(got_hit)
+            got_hit, lost_health = self.obstacle_detector(got_hit)
 
             # Obstacle handler:
             self.obstacle_handler()
 
             # Update Interface: will have to generalize later:
-            self.interfaceObjects[0].update_text("HP:"+ self.tankObject.get_hp(), got_hit)
+            self.interfaceObjects[0].update_text("HP:"+ self.tankObject.get_hp(), lost_health)
             self.interfaceObjects[1].update_text("Fuel:" + self.tankObject.get_fuel_level() + "%", self.tankObject.fuel_tank.fuel_warning)
 
             # Update Screen
@@ -75,7 +75,7 @@ class gameEngine02:
 
         for i in range(2):
             if key[self.player_move[2:4][i]]:
-                self.tankObject.engine.consumption = 1.5 * self.tankObject.engine.idle_consumption
+                self.tankObject.engine.consumption = 2.0 * self.tankObject.engine.idle_consumption
                 self.tankObject.throttle_vertical([-1, 1][i])
 
     def generate_ground(self, start_x, start_y, unit):
@@ -109,7 +109,7 @@ class gameEngine02:
             obstacle_group.add(tile)
         self.tankObject.frame.refresh_collider()
         hit = pygame.sprite.spritecollide(self.tankObject.frame, obstacle_group, False)
-
+        lost_health = False
         if hit and not got_hit:
             got_hit = True
             print("Collision detected!!")
@@ -118,6 +118,7 @@ class gameEngine02:
 
             if self.tankObject.vy >= self.tankObject.frame.velocity_threshold:
                 self.tankObject.frame.lose_health()
+                lost_health = True
                 # For now this is HP display:
                 # self.interfaceObjects[0].color = self.__devRed
 
@@ -127,7 +128,8 @@ class gameEngine02:
             # self.interfaceObjects[0].color = self.__devBlack
 
         self.collisionObjects = hit
-        return got_hit
+        return got_hit, lost_health
 
     def obstacle_handler(self):
-        pass
+        if self.collisionObjects:
+            self.tankObject.update_after_collision(self.dt)

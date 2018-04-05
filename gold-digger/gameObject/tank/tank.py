@@ -14,7 +14,7 @@ class Tank(DynamicGameObject):
         self.frame      = Frame(hp=100)
         self.engine     = Engine(lift=250000., side_force=250000.)
         self.cooler     = Cooler(cooling_rate=10.)
-        self.fuel_tank  = FuelTank(self, capacity=100.)
+        self.fuel_tank  = FuelTank(self, capacity=30.)
         self.cargo_bay  = CargoBay(capacity=100.)
         #self.drill      = Drill(100, 0, 12.)
 

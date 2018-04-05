@@ -49,13 +49,13 @@ class BlockFactory:
         randint = random.randint(0,25)
         block_type = 0
 
-        if randint < 10:
+        if randint < 2:
             block_type = 0
-        elif randint < 15:
+        elif randint < 17:
             block_type = 1
-        elif randint < 18:
+        elif randint < 20:
             block_type = 2
-        elif randint < 21:
+        elif randint < 23:
             block_type = 3
         else:
             block_type = 4
