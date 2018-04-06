@@ -14,6 +14,7 @@ class gameEngine02:
         pygame.init()
         self.__size = self.__width, self.__height = width, height
         self.__pgScreen = pygame.display.set_mode(self.__size)
+
         self.__running = True
 
         self.staticObjects = self.generate_ground(start_x_blocks, start_y_blocks, unit_blocks)
@@ -26,6 +27,7 @@ class gameEngine02:
         self.dt = 1/self.fps
 
         self.player_move = [pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s]
+
 
     def mainloop(self):
 

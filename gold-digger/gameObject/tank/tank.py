@@ -11,11 +11,11 @@ from game_mode_constants import *
 
 class Tank(DynamicGameObject):
     def __init__(self, x, y, m):
-        self.frame      = Frame(hp=100)
-        self.engine     = Engine(lift=250000., side_force=250000.)
-        self.cooler     = Cooler(cooling_rate=10.)
-        self.fuel_tank  = FuelTank(self, capacity=30.)
-        self.cargo_bay  = CargoBay(capacity=100.)
+        self.frame      = Frame(hp=100, level=1)
+        self.engine     = Engine(lift=250000., side_force=250000., level=1)
+        self.cooler     = Cooler(cooling_rate=10., level=1)
+        self.fuel_tank  = FuelTank(self, capacity=30., level=1)
+        self.cargo_bay  = CargoBay(capacity=100., level=1)
         #self.drill      = Drill(100, 0, 12.)
 
         self.components = [self.frame,
